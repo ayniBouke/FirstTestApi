@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using ApiTest.EntityLayer;
+﻿using ApiTest.EntityLayer;
 using System.Data.Entity; 
 
 namespace ApiTest.DataLayer
@@ -26,15 +22,12 @@ namespace ApiTest.DataLayer
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
-
-
-
+            base.OnModelCreating(modelBuilder); 
 
         }
         public DbSet<PersonneEntity> PersonneEntities { get; set; }
-       
-
+        public DbSet<PersonneTestEntity> PersonneTestEntities { get; set; }
+        public DbSet<EmployeeEntity> EmployeeEntities { get; set; }
+        public DbSet<TodoItemEntity> Items { get; set; }
     }
 }

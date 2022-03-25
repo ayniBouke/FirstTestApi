@@ -1,24 +1,16 @@
-﻿using System; 
+﻿using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Linq.Expressions;
- 
+using ApiTest.EntityLayer;
 using System.Data.Entity;
 using System.Configuration;
 using System.Data.Entity.Validation;
-using ApiTest.EntityLayer;
 
 namespace ApiTest.DataLayer
-{
-    /// <summary>
-    /// Generates and holds the connectionstring to the mdf file.
-    /// Uses Entity Framework to connect to the MS SQL LocalDB.
-    /// Can create a database file if it does not exists.
-    /// Automatically migrates database to the latest version after connecting to it.
-    /// Contains template "linq to sql" database manipulation functions, that can be used in the data provider classes
-    /// </summary>
+{ 
     public class DatabaseConnection
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -38,7 +30,7 @@ namespace ApiTest.DataLayer
             {
 
 
-                if (ConfigurationManager.ConnectionStrings["AgriBankApiContext"] != null && !string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["AgriBankApiContext"].ConnectionString))
+                if (ConfigurationManager.ConnectionStrings["ApiTestContext"] != null && !string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["ApiTestContext"].ConnectionString))
                 {
                     return DatabaseConnectionMode.SqlServer;
                 }
@@ -51,8 +43,8 @@ namespace ApiTest.DataLayer
         static DatabaseConnection()
         {
             var connectionString = string.Empty;
-            if (ConfigurationManager.ConnectionStrings["AgriBankApiContext"] != null)
-                connectionString = ConfigurationManager.ConnectionStrings["AgriBankApiContext"].ConnectionString;
+            if (ConfigurationManager.ConnectionStrings["ApiTestContext"] != null)
+                connectionString = ConfigurationManager.ConnectionStrings["ApiTestContext"].ConnectionString;
             if (string.IsNullOrEmpty(connectionString))
             {
                 _server = "(LocalDB)\\MSSQLLocalDB";
@@ -81,7 +73,7 @@ namespace ApiTest.DataLayer
                 DatabaseConnection._directory = directory;
                 DatabaseConnection._dbName = dbName;
                 DatabaseConnection._connectionString = "Data Source=" + _server + ";AttachDbFilename=\"" + Directory + DbName + ".mdf\";Integrated Security=True;";
-                Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApiTestContext, Migrations.Configuration>());
+                Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApiTestContext, Migrations.Configuration>(true));
                 using (var db = new ApiTestContext(_connectionString))
                 {
                     result = db.Database.Exists();
@@ -138,6 +130,7 @@ namespace ApiTest.DataLayer
             {
                 try
                 {
+                    //db.Database.Create();
                     db.Database.CreateIfNotExists();
                     result = true;
                 }
@@ -146,7 +139,7 @@ namespace ApiTest.DataLayer
                     log.Error(string.Format("Create database error\nFolder: {0}"), ex);
                 }
             }
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApiTestContext, Migrations.Configuration>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApiTestContext, Migrations.Configuration>(true));
             return result;
         }
 

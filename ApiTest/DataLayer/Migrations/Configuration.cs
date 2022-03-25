@@ -1,13 +1,11 @@
-﻿
-namespace ApiTest.DataLayer.Migrations
+﻿namespace ApiTest.DataLayer.Migrations
 {
-
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<DataLayer.ApiTestContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ApiTest.DataLayer.ApiTestContext>
     {
         public Configuration()
         {
@@ -15,7 +13,7 @@ namespace ApiTest.DataLayer.Migrations
             AutomaticMigrationDataLossAllowed = true;
         }
 
-        protected override void Seed(DataLayer.ApiTestContext context)
+        protected override void Seed(ApiTest.DataLayer.ApiTestContext context)
         {
             //  This method will be called after migrating to the latest version.
 

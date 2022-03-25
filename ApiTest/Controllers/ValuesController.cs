@@ -18,17 +18,19 @@ namespace ApiTest.Controllers
         // GET api/values/5
         public string Get(int id)
         {
-            return "value";
+            return "value " + id;
         }
 
         // POST api/values
-        public void Post([FromBody] string value)
+        public string Post([FromBody] string value)
         {
+            return value + " Added";
         }
 
         // PUT api/values/5
-        public void Put(int id, [FromBody] string value)
+        public string Put(int id, [FromBody] string value)
         {
+            return value + " Updated with Id "+id;
         }
 
         // DELETE api/values/5
